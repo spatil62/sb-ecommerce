@@ -33,33 +33,15 @@ public class CategoryController {
     @DeleteMapping("/api/admin/categories/{categoryId}")
     //Now it returns response entity so make sure to change return type
     public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
-        //To display msg we are changing code here bcoz with IMPL file changes
-        //we got error for both page and on msg side also so the msg we share we
-        //need to print that
-        try {
             String status = categoryService.deleteCategory(categoryId);
-            //Other way of doing this is
-            //return ResponseEntity.ok(status);
-            //another way
-            //return ResponseEntity.status(HttpStatus.OK).body(status);
-            //There are multiple ways of doing this Response entity(common:return new ResponseEntity<>(status, HttpStatus.OK))
             return new ResponseEntity<>(status, HttpStatus.OK);
-        }
-        catch (ResponseStatusException e){
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
     }
 
     //check out table at the start
     @PutMapping("/api/public/categories/{categoryId}")
-    public ResponseEntity<String> updateCategory(@RequestBody Category category, @PathVariable Long categoryId){
-        try{
+    public ResponseEntity<String> updateCategory(@Valid @RequestBody Category category, @PathVariable Long categoryId){
             Category savedCategory = categoryService.updateCategory(category, categoryId);
             return new ResponseEntity<>("Category with category id: " + categoryId, HttpStatus.OK);
-
-        }catch(ResponseStatusException e){
-            return new ResponseEntity<>(e.getReason(), e.getStatusCode());
-        }
     }
 
 }
